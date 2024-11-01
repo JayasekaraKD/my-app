@@ -3,11 +3,8 @@
 
 import { useState } from "react";
 import { Nav } from "./ui/nav";
-
-type Props = {};
-
 import {
-    ShoppingCart,
+    Workflow,
     LayoutDashboard,
     UsersRound,
     Settings,
@@ -15,12 +12,12 @@ import {
     Edit
 } from "lucide-react";
 import { Button } from "./ui/button";
-
 import { useWindowWidth } from "@react-hook/window-size";
+
+type Props = {};
 
 export default function SideNavbar({ }: Props) {
     const [isCollapsed, setIsCollapsed] = useState(false);
-
     const onlyWidth = useWindowWidth();
     const mobileWidth = onlyWidth < 768;
 
@@ -29,15 +26,15 @@ export default function SideNavbar({ }: Props) {
     }
 
     return (
-        <div className="relative min-w-[80px] border-r px-3  pb-10 pt-24 ">
+        <div className="relative min-w-[80px] border-r px-3 pb-10 pt-24 bg-white">
             {!mobileWidth && (
-                <div className="absolute right-[-20px] top-7">
+                <div className="absolute right-[-20px] top-7 z-50">
                     <Button
                         onClick={toggleSidebar}
                         variant="secondary"
-                        className=" rounded-full p-2"
+                        className="rounded-full p-2 shadow-sm hover:shadow-md transition-shadow bg-white"
                     >
-                        <ChevronRight />
+                        <ChevronRight className={`transition-transform duration-200 ${isCollapsed ? '' : 'rotate-180'}`} />
                     </Button>
                 </div>
             )}
@@ -51,21 +48,9 @@ export default function SideNavbar({ }: Props) {
                         variant: "default"
                     },
                     {
-                        title: "Users",
-                        href: "/users",
-                        icon: UsersRound,
-                        variant: "ghost"
-                    },
-                    {
-                        title: "Ordrs",
-                        href: "/orders",
-                        icon: ShoppingCart,
-                        variant: "ghost"
-                    },
-                    {
-                        title: "Settings",
-                        href: "/settings",
-                        icon: Settings,
+                        title: "Workflows",
+                        href: "/workflows",
+                        icon: Workflow,
                         variant: "ghost"
                     },
                     {
@@ -73,6 +58,12 @@ export default function SideNavbar({ }: Props) {
                         href: "/builder",
                         icon: Edit,
                         variant: "ghost",
+                    },
+                    {
+                        title: "Settings",
+                        href: "/settings",
+                        icon: Settings,
+                        variant: "ghost"
                     },
                 ]}
             />
