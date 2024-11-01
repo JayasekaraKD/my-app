@@ -1,4 +1,3 @@
-// page.tsx
 "use client";
 
 import React, { useState } from "react";
@@ -12,8 +11,9 @@ import {
 import { arrayMove } from "@dnd-kit/sortable";
 import { FieldList } from "@/components/FieldList";
 import { TaskTemplateBuilder } from "@/components/TaskTemplateBuilder";
+import { NewAppWindow } from "@/components/NewAppWindow";
 import { Field } from "@/types";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 
 export default function BuilderPage() {
@@ -64,47 +64,54 @@ export default function BuilderPage() {
     };
 
     return (
-        <div className="flex flex-col gap-6 w-full max-w-7xl mx-auto px-4 py-6">
+        <div className="flex flex-col gap-6 w-full max-w-[1600px] mx-auto px-4 py-6">
             <div className="flex flex-col gap-4">
                 <h1 className="text-2xl font-bold text-gray-900">Task Template Builder</h1>
                 <Alert variant="default" className="bg-lime-50 text-lime-800 border-lime-200">
                     <AlertCircle className="h-4 w-4" />
                     <AlertDescription>
-                        Drag fields from the right panel to build your task template. You can reorder fields by dragging them within the template area.
+                        Drag fields from the right panel to build your task template. You can reorder fields within the template area.
                     </AlertDescription>
                 </Alert>
             </div>
 
-            <DndContext
-                sensors={sensors}
-                onDragStart={handleDragStart}
-                onDragEnd={handleDragEnd}
-            >
-                <div className="flex flex-col lg:flex-row gap-6">
-                    <div className="lg:w-2/3 flex flex-col gap-4">
+            <div className="flex flex-col lg:flex-row gap-6">
+                {/* New App Window */}
+                <div className="lg:w-1/3">
+                    <NewAppWindow />
+                </div>
+
+                <DndContext
+                    sensors={sensors}
+                    onDragStart={handleDragStart}
+                    onDragEnd={handleDragEnd}
+                >
+                    {/* Template Builder */}
+                    <div className="lg:w-1/3">
                         <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                             <TaskTemplateBuilder fields={fields} setFields={setFields} />
                         </div>
                     </div>
 
-                    <div className="lg:w-1/3 flex flex-col gap-4">
+                    {/* Available Fields */}
+                    <div className="lg:w-1/3">
                         <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden sticky top-4">
                             <FieldList />
                         </div>
                     </div>
-                </div>
 
-                <DragOverlay dropAnimation={null}>
-                    {activeField ? (
-                        <div className="flex flex-col items-center justify-center p-4 bg-white rounded-lg shadow-lg border border-lime-200 transform scale-105 transition-transform">
-                            <activeField.icon className="w-8 h-8 mb-2 text-lime-500" />
-                            <div className="text-center font-medium text-gray-700">
-                                {activeField.name}
+                    <DragOverlay dropAnimation={null}>
+                        {activeField ? (
+                            <div className="flex flex-col items-center justify-center p-4 bg-white rounded-lg shadow-lg border border-lime-200 transform scale-105 transition-transform">
+                                <activeField.icon className="w-8 h-8 mb-2 text-lime-500" />
+                                <div className="text-center font-medium text-gray-700">
+                                    {activeField.name}
+                                </div>
                             </div>
-                        </div>
-                    ) : null}
-                </DragOverlay>
-            </DndContext>
+                        ) : null}
+                    </DragOverlay>
+                </DndContext>
+            </div>
         </div>
     );
 }
